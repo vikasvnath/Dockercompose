@@ -1,28 +1,35 @@
 
  version: '3.8'
  
-  services:
+ services:
     laravel-app:
       build: .
-    volumes:
-      - ./website:/var/www/html
-    ports:
+      volumes:
+      - ./:/var/www/html
+      ports:
       - 8080:80
+      environment:
+      - "DB_CONNECTION= mysql"
+      - "DB_HOST= db"
+      - "DB_PORT= 3306"
+      - "DB_DATABASE= test"
+      - "DB_USERNAME= root"
+      - "DB_PASSOWRD= password"  
       depends_on:
-     - db
- services:
-        db:
-           image: mysql:5.7
-        ports:
-      - “3306:3306”
-    environment:
+      - db
+        
+    db:
+     image: mysql:5.7
+     ports:
+       - 3306
+     environment:
       MYSQL_DATABASE: test
       MYSQL_ROOT_PASSWORD: password
-  services:
-     phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-      ports:
-      - “81:80”
-   depends_on:
+     
+    phpmyadmin:
+     image: phpmyadmin/phpmyadmin
+     ports:
+      - 81:80
+     depends_on:
       - db
 
